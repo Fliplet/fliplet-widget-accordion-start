@@ -105,6 +105,7 @@
   // COLLAPSIBLE INITIALIZATION
   // ==========================
 
+  // Initialize collapsibles
   $(Collapsible.SELECTORS.collapsibleStart).collapsible();
   // Cleanup unused Collapsible Ends
   $(Collapsible.SELECTORS.collapsibleEnd).remove();
@@ -124,6 +125,7 @@
     $accordion.find('[data-toggle="collapse"]').attr('data-parent', '#'+id);
   });
 
+  // Event listeners to handle chevron UI states
   $(document).on('show.bs.collapse', Collapsible.SELECTORS.collapse, function(){
     Collapsible.prototype.toggleChevron($(this).attr('id'), true);
   });
