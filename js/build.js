@@ -1,4 +1,4 @@
-+ function($) {
+(function($) {
   'use strict';
 
   if (Fliplet.Env.get('interact')) {
@@ -132,4 +132,4 @@
   $(document).on('hide.bs.collapse', Collapsible.SELECTORS.collapse, function(){
     Collapsible.prototype.toggleChevron($(this).attr('id'), false);
   });
-}(jQuery);
+})(jQuery);
