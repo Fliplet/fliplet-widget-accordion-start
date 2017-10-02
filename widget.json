@@ -13,6 +13,8 @@
       "fliplet-studio-ui"
     ],
     "assets": [
+      "css/interface.css",
+      "vendor/jquery.debounce.js",
       "js/interface.js"
     ]
   },

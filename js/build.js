@@ -32,9 +32,6 @@
       $content = $content.add($next.nextUntil(Collapsible.SELECTORS.widget));
       $next = $content.last().next();
     }
-    if (Collapsible.prototype.widgetIsCollapsibleEnd($next)) {
-      $next.remove();
-    }
 
     // Create Collapsible based on title and content found
     var data = {
@@ -107,8 +104,6 @@
 
   // Initialize collapsibles
   $(Collapsible.SELECTORS.collapsibleStart).collapsible();
-  // Cleanup unused Collapsible Ends
-  $(Collapsible.SELECTORS.collapsibleEnd).remove();
   
   // Wrap adjacent Collapsibles into Accordions
   $(Collapsible.SELECTORS.collapsible)
@@ -124,6 +119,9 @@
     var id = $accordion.attr('id');
     $accordion.find('[data-toggle="collapse"]').attr('data-parent', '#'+id);
   });
+
+  // Cleanup unused Collapsible Ends
+  $(Collapsible.SELECTORS.collapsibleEnd).parents(Collapsible.SELECTORS.widget).remove();
 
   // Event listeners to handle chevron UI states
   $(document).on('show.bs.collapse', Collapsible.SELECTORS.collapse, function(){
