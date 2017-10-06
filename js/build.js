@@ -122,12 +122,18 @@
 
   // Cleanup unused Collapsible Ends
   $(Collapsible.SELECTORS.collapsibleEnd).parents(Collapsible.SELECTORS.widget).remove();
+  // Trigger resize to render certain components correctly (eg.: Grid, Charts)
+  window.dispatchEvent(new Event('resize'));
 
   // Event listeners to handle chevron UI states
-  $(document).on('show.bs.collapse', Collapsible.SELECTORS.collapse, function(){
-    Collapsible.prototype.toggleChevron($(this).attr('id'), true);
-  });
-  $(document).on('hide.bs.collapse', Collapsible.SELECTORS.collapse, function(){
-    Collapsible.prototype.toggleChevron($(this).attr('id'), false);
-  });
+  $(document)
+    .on('show.bs.collapse', Collapsible.SELECTORS.collapse, function(){
+      Collapsible.prototype.toggleChevron($(this).attr('id'), true);
+    })
+    .on('shown.bs.collapse', Collapsible.SELECTORS.collapse, function(){
+      window.dispatchEvent(new Event('resize'));
+    })
+    .on('hide.bs.collapse', Collapsible.SELECTORS.collapse, function(){
+      Collapsible.prototype.toggleChevron($(this).attr('id'), false);
+    });
 })(jQuery);
