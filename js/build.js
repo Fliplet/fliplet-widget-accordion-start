@@ -36,7 +36,7 @@
     // Create Collapsible based on title and content found
     var data = {
       id: id,
-      title: title,
+      title: $('<textarea />').html(title).text(), // Decode HTML entities
       collapsed: true
     };
     var $collapsible = $(collapsibleTemplate(data));
