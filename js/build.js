@@ -11,14 +11,12 @@
   var collapsibleTemplate = Fliplet.Widget.Templates['templates.collapsible'];
 
   function resizeWindow() {
-    if (document.createEvent) { // W3C
-      var ev = document.createEvent('Event');
-      ev.initEvent('resize', true, true);
-      window.dispatchEvent(ev);
-    } else { // IE
-      element = document.documentElement;
-      var event = document.createEventObject();
-      element.fireEvent("onresize",event);
+    if (Modernizr.windows) {
+     var event = document.createEvent('UIEvents');
+     event.initUIEvent('resize', true, false, window, 0);
+     window.dispatchEvent(event);
+    } else {
+      window.dispatchEvent(new Event('resize'));
     }
   }
   
