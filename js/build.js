@@ -11,15 +11,13 @@
   var collapsibleTemplate = Fliplet.Widget.Templates['templates.collapsible'];
 
   function resizeWindow() {
-    setTimeout(function() {
-      if (navigator.userAgent.indexOf('MSIE') !== -1 || navigator.appVersion.indexOf('Trident/') > 0) {
-       var evt = document.createEvent('UIEvents');
-       evt.initUIEvent('resize', true, false, window, 0);
-       window.dispatchEvent(evt);
-      } else {
-        $(window).trigger('resize');
-      }
-    }, 0);
+    if (Modernizr.windows) {
+     var event = document.createEvent('UIEvents');
+     event.initUIEvent('resize', true, false, window, 0);
+     window.dispatchEvent(event);
+    } else {
+      window.dispatchEvent(new Event('resize'));
+    }
   }
   
   var Collapsible = function(el) {
