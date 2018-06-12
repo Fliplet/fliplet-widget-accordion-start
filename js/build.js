@@ -9,6 +9,16 @@
   // ============================
 
   var collapsibleTemplate = Fliplet.Widget.Templates['templates.collapsible'];
+
+  function resizeWindow() {
+    if (Modernizr.windows) {
+     var event = document.createEvent('UIEvents');
+     event.initUIEvent('resize', true, false, window, 0);
+     window.dispatchEvent(event);
+    } else {
+      window.dispatchEvent(new Event('resize'));
+    }
+  }
   
   var Collapsible = function(el) {
     // Plugin initialization
@@ -123,7 +133,7 @@
   // Cleanup unused Collapsible Ends
   $(Collapsible.SELECTORS.collapsibleEnd).parents(Collapsible.SELECTORS.widget).remove();
   // Trigger resize to render certain components correctly (e.g. Grid, Charts)
-  window.dispatchEvent(new Event('resize'));
+  resizeWindow();
 
   // Parse queries to open specific accordions
   /*
@@ -163,11 +173,10 @@
   $(document)
     .on('show.bs.collapse', Collapsible.SELECTORS.collapse, function(){
       Collapsible.prototype.toggleChevron($(this).attr('id'), true);
-    })
-    .on('shown.bs.collapse', Collapsible.SELECTORS.collapse, function(){
-      window.dispatchEvent(new Event('resize'));
+      resizeWindow();
     })
     .on('hide.bs.collapse', Collapsible.SELECTORS.collapse, function(){
       Collapsible.prototype.toggleChevron($(this).attr('id'), false);
+      resizeWindow();
     });
 })(jQuery);
