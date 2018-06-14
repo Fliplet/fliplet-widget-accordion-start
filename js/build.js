@@ -172,11 +172,20 @@
   // Event listeners to handle chevron UI states
   $(document)
     .on('show.bs.collapse', Collapsible.SELECTORS.collapse, function(){
+      // Immediately when the expand action is fired
       Collapsible.prototype.toggleChevron($(this).attr('id'), true);
       resizeWindow();
     })
     .on('hide.bs.collapse', Collapsible.SELECTORS.collapse, function(){
+      // Immediately when the collapse action is fired
       Collapsible.prototype.toggleChevron($(this).attr('id'), false);
       resizeWindow();
+    })
+    .on('shown.bs.collapse', Collapsible.SELECTORS.collapse, function(){
+      // When finishes expanding
+      resizeWindow();
+    })
+    .on('hidden.bs.collapse', Collapsible.SELECTORS.collapse, function(){
+      // When finishes collapsing
     });
 })(jQuery);
