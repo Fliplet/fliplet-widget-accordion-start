@@ -50,6 +50,19 @@
   position: relative;
 }
 
+[data-name="Accordion Heading"] ~ * {
+  display: none;
+}
+
+.mode-interact [data-name="Accordion Heading"] ~ *,
+[data-name="Accordion Heading"] ~ [data-name="End of Accordion Group"] ~ * {
+  display: inherit;
+}
+
+script {
+  display: none;
+}
+
 /* PREVIEW */
 
 [data-toggle="collapse"] {
