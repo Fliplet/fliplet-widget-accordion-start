@@ -10,9 +10,13 @@
   border-bottom-right-radius: 0;
   border-bottom-left-radius: 0;
   margin-top: 0;
-  margin-bottom: 15px;
+  margin-bottom: 0;
   font-size: 16px;
   position: relative;
+}
+
+.mode-interect .collapse-start {
+  margin-bottom: 15px;
 }
 
 .collapse-start:after {
@@ -52,6 +56,15 @@
 
 [data-name="Accordion Heading"] ~ * {
   display: none;
+}
+
+[data-name="Accordion Heading"] ~ [data-name="Accordion Heading"] {
+  display: block;
+}
+
+[data-name="Accordion Heading"] ~ [data-name="Accordion Heading"] .collapse-start {
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
 }
 
 .mode-interact [data-name="Accordion Heading"] ~ *,
