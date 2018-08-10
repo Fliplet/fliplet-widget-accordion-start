@@ -175,13 +175,13 @@
       // Immediately when the expand action is fired
       var id = $(this).attr('id');
       var label = $('[data-toggle="collapse"][data-target="#' + id + '"]').text().trim();
+      Collapsible.prototype.toggleChevron(id, true);
+      resizeWindow();
       Fliplet.Analytics.trackEvent({
         category: 'accordion',
         action: 'open',
         label: label
       });
-      Collapsible.prototype.toggleChevron(id, true);
-      resizeWindow();
     })
     .on('hide.bs.collapse', Collapsible.SELECTORS.collapse, function(){
       // Immediately when the collapse action is fired
