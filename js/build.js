@@ -174,7 +174,7 @@
     .on('show.bs.collapse', Collapsible.SELECTORS.collapse, function(){
       // Immediately when the expand action is fired
       var id = $(this).attr('id');
-      var label = $('.panel-title[data-target="#' + id + '"]').text().trim();
+      var label = $('[data-toggle="collapse"][data-target="#' + id + '"]').text().trim();
       Fliplet.Analytics.trackEvent({
         category: 'accordion',
         action: 'open',
