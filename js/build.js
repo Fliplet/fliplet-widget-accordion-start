@@ -173,8 +173,15 @@
   $(document)
     .on('show.bs.collapse', Collapsible.SELECTORS.collapse, function(){
       // Immediately when the expand action is fired
-      Collapsible.prototype.toggleChevron($(this).attr('id'), true);
+      var id = $(this).attr('id');
+      var label = $('[data-toggle="collapse"][data-target="#' + id + '"]').text().trim();
+      Collapsible.prototype.toggleChevron(id, true);
       resizeWindow();
+      Fliplet.Analytics.trackEvent({
+        category: 'accordion',
+        action: 'open',
+        label: label
+      });
     })
     .on('hide.bs.collapse', Collapsible.SELECTORS.collapse, function(){
       // Immediately when the collapse action is fired
