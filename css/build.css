@@ -72,6 +72,39 @@
   display: inherit;
 }
 
+.mode-interact [data-name="Accordion Heading"] ~ table,
+[data-name="Accordion Heading"] ~ [data-name="End of Accordion Group"] ~ table {
+  display: table;
+}
+
+.mode-interact [data-name="Accordion Heading"] ~ .table-scrollable,
+[data-name="Accordion Heading"] ~ [data-name="End of Accordion Group"] ~ .table-scrollable {
+  display: block;
+}
+
+@media (max-width: 639px) {
+  .mode-interact [data-name="Accordion Heading"] ~ .table-xs-scrollable,
+  [data-name="Accordion Heading"] ~ [data-name="End of Accordion Group"] ~ .table-xs-scrollable {
+    display: block;
+  }
+}
+
+@media (max-width: 991px) {
+  .mode-interact [data-name="Accordion Heading"] ~ .table-sm-scrollable,
+  [data-name="Accordion Heading"] ~ [data-name="End of Accordion Group"] ~ .table-sm-scrollable {
+    display: block;
+  }
+}
+
+@media (max-width: 1199px) {
+  .mode-interact [data-name="Accordion Heading"] ~ .table-md-scrollable,
+  [data-name="Accordion Heading"] ~ [data-name="End of Accordion Group"] ~ .table-md-scrollable {
+    display: block;
+  }
+}
+
+
+
 script {
   display: none;
 }
