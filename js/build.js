@@ -138,6 +138,7 @@
   // Parse queries to open specific accordions
   /*
    * action {String} Set to 'openAccordion' to open a specific accordion
+   * title {String} The accordion title to match and open (Optional)
    * index {Number} The index of accordion that you want to open, where 0 is the first one. (Default: 0)
    * groupIndex {Number} (Optional) The group of accordion that you want to specify. Use this to apply the index within a specific group. If this is not used, the index query will be used to target an accordion relative to the entire screen.
    * scroll {Boolean} If true, users will be scrolled to the opened accordion. (Default: false)
@@ -148,24 +149,35 @@
    * Example 2 - Open and scroll to the 2nd accordion of the 2nd accordion group
    * ?action=openAccordion&groupIndex=1&index=1&scroll=true
    * 
+   * Example 3 - Open all accordions with title "Foo bar" and scrolls to the first match
+   * ?action=openAccordion&title=Foo%20bar&scroll=true
+   * 
    */
   var query = Fliplet.Navigate.query;
   if (query && query.action === 'openAccordion') {
     var index = parseInt(query.index, 10) || 0;
     var groupIndex = parseInt(query.groupIndex, 10) || '';
-    var selector;
+    var title = query.title;
+    var scroll = query.scroll === 'true';
     var $collapse;
 
-    if (typeof groupIndex === 'number') {
-      selector = '.panel-group:eq('+groupIndex+') > .panel:eq('+index+')';
+    if (title) {
+      $collapse = $('.panel-group > .panel').filter(function () {
+        return $(this).find('h4').text() === title;
+      });
+    } else if (typeof groupIndex === 'number') {
+      $collapse = $('.panel-group:eq('+groupIndex+') > .panel:eq('+index+')');
     } else {
-      selector = '.panel-group > .panel:eq('+index+')';
+      $collapse = $('.panel-group > .panel:eq('+index+')');
     }
-    $collapse = $(selector);
+
+    if (!$collapse.length) {
+      return;
+    }
 
     $collapse.children('.panel-collapse').collapse('show');
-    if (query.scroll && $collapse.position()) {
-      $('html, body').animate({scrollTop: $collapse.position().top}, 100);
+    if (scroll && $collapse.position()) {
+      $('html, body').animate({scrollTop: $collapse.eq(0).position().top}, 100);
     }
   }
 
