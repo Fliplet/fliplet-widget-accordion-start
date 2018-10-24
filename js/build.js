@@ -150,7 +150,7 @@
    * ?action=openAccordion&groupIndex=1&index=1&scroll=true
    * 
    * Example 3 - Open all accordions with title "Foo bar" and scrolls to the first match
-   * ?action=openAccordion&title=Foo%20bar
+   * ?action=openAccordion&title=Foo%20bar&scroll=true
    * 
    */
   var query = Fliplet.Navigate.query;
