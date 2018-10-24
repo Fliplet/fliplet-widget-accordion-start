@@ -158,6 +158,7 @@
     var index = parseInt(query.index, 10) || 0;
     var groupIndex = parseInt(query.groupIndex, 10) || '';
     var title = query.title;
+    var scroll = query.scroll === 'true';
     var $collapse;
 
     if (title) {
@@ -175,7 +176,7 @@
     }
 
     $collapse.children('.panel-collapse').collapse('show');
-    if (query.scroll && $collapse.position()) {
+    if (scroll && $collapse.position()) {
       $('html, body').animate({scrollTop: $collapse.eq(0).position().top}, 100);
     }
   }
