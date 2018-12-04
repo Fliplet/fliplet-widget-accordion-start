@@ -54,7 +54,12 @@
   position: relative;
 }
 
-[data-name="Accordion Heading"] ~ * {
+[data-name="End of Accordion Group"] + * {
+  margin-top: 10px;
+}
+
+[data-name="Accordion Heading"] ~ *,
+[data-name="End of Accordion Group"] ~ [data-name="Accordion Heading"] ~ * {
   display: none;
 }
 
@@ -68,7 +73,7 @@
 }
 
 .mode-interact [data-name="Accordion Heading"] ~ *,
-[data-name="Accordion Heading"] ~ [data-name="End of Accordion Group"] ~ * {
+[data-name="End of Accordion Group"] ~ * {
   display: inherit;
 }
 
