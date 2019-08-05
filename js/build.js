@@ -9,6 +9,7 @@
   // ============================
 
   var collapsibleTemplate = Fliplet.Widget.Templates['templates.collapsible'];
+  var indexQueryDelimiter = ',';
 
   function resizeWindow() {
     if (Modernizr.windows) {
@@ -19,7 +20,81 @@
       window.dispatchEvent(new Event('resize'));
     }
   }
-  
+
+  function parseQueries() {
+    /*
+     * action {String} Set to 'openAccordion' to open a specific accordion
+     * title {String} The accordion title to match and open (Optional)
+     * index {Number} The index of accordion that you want to open, where 0 is the first one. (Default: 0)
+     * groupIndex {Number} (Optional) The group of accordion that you want to specify. Use this to apply the index within a specific group. If this is not used, the index query will be used to target an accordion relative to the entire screen.
+     * scroll {Boolean} If true, users will be scrolled to the opened accordion. (Default: false)
+     *
+     * Example 1 - Open the 1st accordion
+     * ?action=openAccordion
+     *
+     * Example 2 - Open and scroll to the 2nd accordion of the 2nd accordion group
+     * ?action=openAccordion&groupIndex=1&index=1&scroll=true
+     *
+     * Example 3 - Open all accordions with title "Foo bar" and scrolls to the first match
+     * ?action=openAccordion&title=Foo%20bar&scroll=true
+     *
+     */
+    var query = Fliplet.Navigate.query;
+
+    if (query.action !== 'openAccordion') {
+      return;
+    }
+
+    var index = query.index.split(indexQueryDelimiter).length > 1
+      ? _.compact(query.index.split(indexQueryDelimiter))
+      : parseInt(query.index, 10) || 0;
+    var groupIndex = parseInt(query.groupIndex, 10) || '';
+    var title = query.title;
+    var scroll = query.scroll === 'true';
+    var $collapse;
+
+    if (title) {
+      $collapse = $('.panel-group > .panel').filter(function () {
+        return $(this).find('h4').text() === title;
+      });
+    } else if (typeof groupIndex === 'number') {
+      $collapse = $('.panel-group:eq(' + groupIndex + ') > .panel:eq(' + index + ')');
+    } else if (_.isArray(index)) {
+      var selectors = _.map(_.compact(index), function (i) {
+        return '.panel-group > .panel:eq(' + i + ')';
+      }).join(indexQueryDelimiter);
+
+      $collapse = $(selectors);
+    } else if (_.isNumber(index)) {
+      $collapse = $('.panel-group > .panel:eq(' + index + ')');
+    }
+
+    if (!$collapse.length) {
+      return;
+    }
+
+    $collapse.children('.panel-collapse').collapse('show');
+    if (scroll && $collapse.position()) {
+      $('html, body').animate({
+        scrollTop: $collapse.eq(0).position().top
+      }, 100);
+    }
+  }
+
+  function updatePageContext() {
+    Fliplet.Page.Context.remove(['action', 'groupIndex', 'index', 'scroll', 'title']);
+    Fliplet.Page.Context.update({
+      action: 'openAccordion',
+      index: $('.panel .collapse.in').parents('.panel')
+        .map(function () {
+          return $(this).index('.panel-group > .panel');
+        })
+        .get()
+        .join(indexQueryDelimiter),
+      scroll: true
+    });
+  }
+
   var Collapsible = function(el) {
     // Plugin initialization
     // Find the widget container for Collapsible Start
@@ -27,7 +102,7 @@
     var id = $collapsibleStart.data('collapse-start-id').toString();
     var $startWidget = $collapsibleStart.closest(Collapsible.SELECTORS.widget);
     var title = $collapsibleStart.html();
-    
+
     // Find all subsequent content nodes
     var $content = $startWidget.nextUntil(Collapsible.SELECTORS.widget);
     var $next;
@@ -36,7 +111,7 @@
     } else {
       $next = $startWidget.next();
     }
-    
+
     while ($next.length && !Collapsible.prototype.widgetIsCollapsiblePart($next)) {
       $content = $content.add($next);
       $content = $content.add($next.nextUntil(Collapsible.SELECTORS.widget));
@@ -50,7 +125,7 @@
       collapsed: true
     };
     var $collapsible = $(collapsibleTemplate(data));
-    $content.detach();      
+    $content.detach();
     $collapsible.find('.panel-body').html($content);
     $startWidget.replaceWith($collapsible);
   }
@@ -62,7 +137,7 @@
     collapsible: '[data-collapse-id]',
     widget: '[data-fl-widget-instance]'
   }
-    
+
   Collapsible.prototype.widgetIsCollapsibleStart = function ($widget){
     return $widget.find(Collapsible.SELECTORS.collapsibleStart).length > 0;
   }
@@ -100,7 +175,6 @@
   $.fn.collapsible = Plugin;
   $.fn.collapsible.Constructor = Collapsible;
 
-
   // COLLAPSIBLE NO CONFLICT
   // =======================
 
@@ -108,13 +182,13 @@
     $.fn.collapsible = old;
     return this;
   }
-  
+
   // COLLAPSIBLE INITIALIZATION
   // ==========================
 
   // Initialize collapsibles
   $(Collapsible.SELECTORS.collapsibleStart).collapsible();
-  
+
   // Wrap adjacent Collapsibles into Accordions
   $(Collapsible.SELECTORS.collapsible)
     .not(Collapsible.SELECTORS.collapsible + '+' + Collapsible.SELECTORS.collapsible)
@@ -122,7 +196,7 @@
       $(this)
         .nextUntil(':not('+Collapsible.SELECTORS.collapsible+')')
         .addBack()
-        .wrapAll('<div class="panel-group" id="accordion-'+(i+1)+'" />');
+        .wrapAll('<div class="panel-group" id="accordion-' + (i + 1) + '" />');
     });
   $('.panel-group').each(function(){
     var $accordion = $(this);
@@ -134,52 +208,8 @@
   $(Collapsible.SELECTORS.collapsibleEnd).parents(Collapsible.SELECTORS.widget).remove();
   // Trigger resize to render certain components correctly (e.g. Grid, Charts)
   resizeWindow();
-
   // Parse queries to open specific accordions
-  /*
-   * action {String} Set to 'openAccordion' to open a specific accordion
-   * title {String} The accordion title to match and open (Optional)
-   * index {Number} The index of accordion that you want to open, where 0 is the first one. (Default: 0)
-   * groupIndex {Number} (Optional) The group of accordion that you want to specify. Use this to apply the index within a specific group. If this is not used, the index query will be used to target an accordion relative to the entire screen.
-   * scroll {Boolean} If true, users will be scrolled to the opened accordion. (Default: false)
-   * 
-   * Example 1 - Open the 1st accordion
-   * ?action=openAccordion
-   *
-   * Example 2 - Open and scroll to the 2nd accordion of the 2nd accordion group
-   * ?action=openAccordion&groupIndex=1&index=1&scroll=true
-   * 
-   * Example 3 - Open all accordions with title "Foo bar" and scrolls to the first match
-   * ?action=openAccordion&title=Foo%20bar&scroll=true
-   * 
-   */
-  var query = Fliplet.Navigate.query;
-  if (query && query.action === 'openAccordion') {
-    var index = parseInt(query.index, 10) || 0;
-    var groupIndex = parseInt(query.groupIndex, 10) || '';
-    var title = query.title;
-    var scroll = query.scroll === 'true';
-    var $collapse;
-
-    if (title) {
-      $collapse = $('.panel-group > .panel').filter(function () {
-        return $(this).find('h4').text() === title;
-      });
-    } else if (typeof groupIndex === 'number') {
-      $collapse = $('.panel-group:eq('+groupIndex+') > .panel:eq('+index+')');
-    } else {
-      $collapse = $('.panel-group > .panel:eq('+index+')');
-    }
-
-    if (!$collapse.length) {
-      return;
-    }
-
-    $collapse.children('.panel-collapse').collapse('show');
-    if (scroll && $collapse.position()) {
-      $('html, body').animate({scrollTop: $collapse.eq(0).position().top}, 100);
-    }
-  }
+  parseQueries();
 
   // Event listeners to handle chevron UI states
   $(document)
@@ -202,9 +232,11 @@
     })
     .on('shown.bs.collapse', Collapsible.SELECTORS.collapse, function(){
       // When finishes expanding
+      updatePageContext();
       resizeWindow();
     })
     .on('hidden.bs.collapse', Collapsible.SELECTORS.collapse, function(){
       // When finishes collapsing
+      updatePageContext();
     });
 })(jQuery);
