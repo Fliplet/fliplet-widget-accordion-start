@@ -25,6 +25,7 @@
     // Find the widget container for Collapsible Start
     var $collapsibleStart = $(el);
     var id = $collapsibleStart.data('collapse-start-id').toString();
+    var uuid = $collapsibleStart.data('collapse-start-uuid').toString();
     var $startWidget = $collapsibleStart.closest(Collapsible.SELECTORS.widget);
     var title = $collapsibleStart.html();
     
@@ -46,6 +47,7 @@
     // Create Collapsible based on title and content found
     var data = {
       id: id,
+      uuid: uuid,
       title: $('<textarea />').html(title).text(), // Decode HTML entities
       collapsed: true
     };
