@@ -22,7 +22,8 @@
     "dependencies": [
       "handlebars",
       "jquery",
-      "bootstrap"
+      "bootstrap",
+      "lodash"
     ],
     "assets": [
       "css/build.css",

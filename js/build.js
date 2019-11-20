@@ -137,15 +137,10 @@
 
   // Cleanup unused Collapsible Ends
   $(Collapsible.SELECTORS.collapsibleEnd).parents(Collapsible.SELECTORS.widget)
-    .each(function () {
-      var widgetPackage = $(this).data('widget-package');
+    .not(_.map(Collapsible.SELECTORS.nestingWidgets, function (name) {
+      return '[data-widget-package="' + name + '"]';
+    }).join(', ')).remove();
 
-      if (Collapsible.SELECTORS.nestingWidgets.indexOf(widgetPackage) > -1) {
-        return;
-      }
-
-      $(this).remove();
-    })
   // Trigger resize to render certain components correctly (e.g. Grid, Charts)
   resizeWindow();
 
