@@ -62,7 +62,10 @@
     collapsibleEnd: '[data-collapse-end-id]',
     collapse: '.collapse',
     collapsible: '[data-collapse-id]',
-    widget: '[data-fl-widget-instance]'
+    widget: '[data-fl-widget-instance]',
+    nestingWidgets: [
+      'com.fliplet.container'
+    ]
   }
     
   Collapsible.prototype.widgetIsCollapsibleStart = function ($widget){
@@ -133,7 +136,11 @@
   });
 
   // Cleanup unused Collapsible Ends
-  $(Collapsible.SELECTORS.collapsibleEnd).parents(Collapsible.SELECTORS.widget).remove();
+  $(Collapsible.SELECTORS.collapsibleEnd).parents(Collapsible.SELECTORS.widget)
+    .not(_.map(Collapsible.SELECTORS.nestingWidgets, function (name) {
+      return '[data-widget-package="' + name + '"]';
+    }).join(', ')).remove();
+
   // Trigger resize to render certain components correctly (e.g. Grid, Charts)
   resizeWindow();
 
