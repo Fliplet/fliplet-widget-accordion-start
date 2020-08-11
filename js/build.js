@@ -192,6 +192,11 @@
 
   // Event listeners to handle chevron UI states
   $(document)
+    .on('keydown', Collapsible.SELECTORS.collapsible, function(event) {
+      if (event.keyCode === 13 || event.keyCode === 32) {
+        $(Collapsible.SELECTORS.collapse).collapse('toggle');
+      }
+    })
     .on('show.bs.collapse', Collapsible.SELECTORS.collapse, function(){
       // Immediately when the expand action is fired
       var id = $(this).attr('id');
