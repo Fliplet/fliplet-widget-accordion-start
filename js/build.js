@@ -194,7 +194,7 @@
   $(document)
     .on('keydown', Collapsible.SELECTORS.collapsible, function(event) {
       if (event.keyCode === 13 || event.keyCode === 32) {
-        $(event.target).find('.collapse').collapse('toggle');
+        $(event.target).find(Collapsible.SELECTORS.collapse).collapse('toggle');
       }
     })
     .on('show.bs.collapse', Collapsible.SELECTORS.collapse, function(){
