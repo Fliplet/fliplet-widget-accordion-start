@@ -127,10 +127,10 @@ script {
   transform: none;
 }
 
-.panel.panel-default.focus-outline {
+.panel.panel-default {
   position: relative;
 }
 
-.panel.panel-default.focus-outline:focus {
+.panel.panel-default:focus {
   z-index: 2;
 }
