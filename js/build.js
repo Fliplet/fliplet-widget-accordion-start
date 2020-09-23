@@ -199,8 +199,13 @@
     })
     .on('show.bs.collapse', Collapsible.SELECTORS.collapse, function(){
       // Immediately when the expand action is fired
-      var id = $(this).attr('id');
+      var element = $(this);
+      var id = element.attr('id');
       var label = $('[data-toggle="collapse"][data-target="#' + id + '"]').text().trim();
+      var parentId = element.prev().data('parent');
+
+      $(parentId).find('.collapse.in').collapse('hide');
+      
       Collapsible.prototype.toggleChevron(id, true);
       resizeWindow();
       Fliplet.Analytics.trackEvent({
