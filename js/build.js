@@ -199,10 +199,10 @@
     })
     .on('show.bs.collapse', Collapsible.SELECTORS.collapse, function(){
       // Immediately when the expand action is fired
-      var element = $(this);
-      var id = element.attr('id');
+      var $element = $(this);
+      var id = $element.attr('id');
       var label = $('[data-toggle="collapse"][data-target="#' + id + '"]').text().trim();
-      var parentId = element.prev().data('parent');
+      var parentId = $element.prev().data('parent');
 
       $(parentId).find('.collapse.in').collapse('hide');
       
