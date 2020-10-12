@@ -203,8 +203,18 @@
       var id = $element.attr('id');
       var label = $('[data-toggle="collapse"][data-target="#' + id + '"]').text().trim();
       var parentId = $element.prev().data('parent');
+      var $parentElement = $(parentId);
+      var $openedAccordions = $parentElement.find('.collapse.in');
+      var isNestedAccordion = !!$parentElement.parents('.collapse.in').length;
+      var isChildOpening = !!$element.find('.opening').length;
 
-      $(parentId).find('.collapse.in').collapse('hide');
+      if (isNestedAccordion) {
+        $element.addClass('opening');
+      }
+
+      if ($openedAccordions.length && !isChildOpening) {
+        $openedAccordions.collapse('hide');
+      } 
       
       Collapsible.prototype.toggleChevron(id, true);
       resizeWindow();
@@ -216,11 +226,12 @@
     })
     .on('hide.bs.collapse', Collapsible.SELECTORS.collapse, function(){
       // Immediately when the collapse action is fired
-      Collapsible.prototype.toggleChevron($(this).attr('id'), false);
       resizeWindow();
     })
     .on('shown.bs.collapse', Collapsible.SELECTORS.collapse, function(){
       // When finishes expanding
+      $(this).removeClass('opening');
+
       resizeWindow();
     })
     .on('hidden.bs.collapse', Collapsible.SELECTORS.collapse, function(){
