@@ -126,11 +126,3 @@ script {
   -ms-transform: none;
   transform: none;
 }
-
-.panel.panel-default {
-  position: relative;
-}
-
-.panel.panel-default:focus {
-  z-index: 2;
-}
