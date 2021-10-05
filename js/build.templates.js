@@ -13,15 +13,15 @@ this["Fliplet"]["Widget"]["Templates"]["templates.collapsible"] = Handlebars.tem
     + alias4(((helper = (helper = helpers.id || (depth0 != null ? depth0.id : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"id","hash":{},"data":data}) : helper)))
     + "\" data-collapse-uuid=\""
     + alias4(((helper = (helper = helpers.uuid || (depth0 != null ? depth0.uuid : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"uuid","hash":{},"data":data}) : helper)))
-    + "\" tabindex=\"0\">\n  <h4 class=\"panel-title "
+    + "\" tabindex=\"0\">\r\n  <h4 class=\"panel-title "
     + ((stack1 = helpers["if"].call(alias1,(depth0 != null ? depth0.collapsed : depth0),{"name":"if","hash":{},"fn":container.program(1, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
     + "\" data-target=\"#collapse-"
     + alias4(((helper = (helper = helpers.id || (depth0 != null ? depth0.id : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"id","hash":{},"data":data}) : helper)))
     + "\" data-toggle=\"collapse\">"
     + alias4(((helper = (helper = helpers.title || (depth0 != null ? depth0.title : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"title","hash":{},"data":data}) : helper)))
-    + "</h4>\n  <div class=\"panel-collapse collapse "
+    + "</h4>\r\n  <div class=\"panel-collapse collapse "
     + ((stack1 = helpers.unless.call(alias1,(depth0 != null ? depth0.collapsed : depth0),{"name":"unless","hash":{},"fn":container.program(3, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
     + "\" id=\"collapse-"
     + alias4(((helper = (helper = helpers.id || (depth0 != null ? depth0.id : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"id","hash":{},"data":data}) : helper)))
-    + "\">\n    <div class=\"panel-body\"></div>\n  </div>\n</div>\n";
+    + "\">\r\n    <div class=\"panel-body\"></div>\r\n  </div>\r\n</div>\r\n";
 },"useData":true});
