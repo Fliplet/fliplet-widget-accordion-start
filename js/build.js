@@ -1,6 +1,10 @@
 (function($) {
   'use strict';
 
+  Fliplet.Widget.instance('collapse-start', function() {
+    $(this).translate();
+  });
+
   if (Fliplet.Env.get('interact')) {
     return;
   }
