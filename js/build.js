@@ -38,8 +38,6 @@
     var $content = $startWidget.nextUntil(Collapsible.SELECTORS.widget);
     var $next;
 
-    $collapsibleStart.translate();
-
     if ($content.length) {
       $next = $content.last().next();
     } else {
