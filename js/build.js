@@ -1,6 +1,10 @@
 (function($) {
   'use strict';
 
+  Fliplet.Widget.instance('collapse-start', function() {
+    $(this).translate();
+  });
+
   if (Fliplet.Env.get('interact')) {
     return;
   }
@@ -12,14 +16,15 @@
 
   function resizeWindow() {
     if (Modernizr.windows) {
-     var event = document.createEvent('UIEvents');
-     event.initUIEvent('resize', true, false, window, 0);
-     window.dispatchEvent(event);
+      var event = document.createEvent('UIEvents');
+
+      event.initUIEvent('resize', true, false, window, 0);
+      window.dispatchEvent(event);
     } else {
       window.dispatchEvent(new Event('resize'));
     }
   }
-  
+
   var Collapsible = function(el) {
     // Plugin initialization
     // Find the widget container for Collapsible Start
@@ -28,16 +33,17 @@
     var uuid = $collapsibleStart.data('collapse-start-uuid').toString();
     var $startWidget = $collapsibleStart.closest(Collapsible.SELECTORS.widget);
     var title = $collapsibleStart.html();
-    
+
     // Find all subsequent content nodes
     var $content = $startWidget.nextUntil(Collapsible.SELECTORS.widget);
     var $next;
+
     if ($content.length) {
       $next = $content.last().next();
     } else {
       $next = $startWidget.next();
     }
-    
+
     while ($next.length && !Collapsible.prototype.widgetIsCollapsiblePart($next)) {
       $content = $content.add($next);
       $content = $content.add($next.nextUntil(Collapsible.SELECTORS.widget));
@@ -52,10 +58,11 @@
       collapsed: true
     };
     var $collapsible = $(collapsibleTemplate(data));
-    $content.detach();      
+
+    $content.detach();
     $collapsible.find('.panel-body').html($content);
     $startWidget.replaceWith($collapsible);
-  }
+  };
 
   Collapsible.SELECTORS = {
     collapsibleStart: '[data-collapse-start-id]',
@@ -66,38 +73,39 @@
     nestingWidgets: [
       'com.fliplet.container'
     ]
-  }
-    
-  Collapsible.prototype.widgetIsCollapsibleStart = function ($widget){
+  };
+
+  Collapsible.prototype.widgetIsCollapsibleStart = function($widget) {
     return $widget.find(Collapsible.SELECTORS.collapsibleStart).length > 0;
-  }
+  };
 
-  Collapsible.prototype.widgetIsCollapsibleEnd = function ($widget){
+  Collapsible.prototype.widgetIsCollapsibleEnd = function($widget) {
     return $widget.find(Collapsible.SELECTORS.collapsibleEnd).length > 0;
-  }
+  };
 
-  Collapsible.prototype.widgetIsCollapsiblePart = function ($widget){
+  Collapsible.prototype.widgetIsCollapsiblePart = function($widget) {
     return $widget.find(Collapsible.SELECTORS.collapsibleStart).length > 0
       || $widget.find(Collapsible.SELECTORS.collapsibleEnd).length > 0;
-  }
+  };
 
-  Collapsible.prototype.toggleChevron = function (id, show){
+  Collapsible.prototype.toggleChevron = function(id, show) {
     $('[data-target="#' + id + '"]')[show ? 'removeClass' : 'addClass']('collapsed');
-  }
+  };
 
   // COLLAPSIBLE PLUGIN DEFINITION
   // =============================
 
   function Plugin(option) {
-    return this.each(function () {
-      var $this = $(this)
-      var data  = $this.data('bs.collapsible')
+    return this.each(function() {
+      var $this = $(this);
+      var data  = $this.data('bs.collapsible');
 
-      if (!data) $this.data('bs.collapsible', (data = new Collapsible(this)))
-      if (typeof option == 'string' && typeof data[option] === 'function') {
+      if (!data) $this.data('bs.collapsible', (data = new Collapsible(this)));
+
+      if (typeof option === 'string' && typeof data[option] === 'function') {
         data[option].call($this);
       }
-    })
+    });
   }
 
   var old = $.fn.collapsible;
@@ -109,35 +117,37 @@
   // COLLAPSIBLE NO CONFLICT
   // =======================
 
-  $.fn.collapsible.noConflict = function () {
+  $.fn.collapsible.noConflict = function() {
     $.fn.collapsible = old;
+
     return this;
-  }
-  
+  };
+
   // COLLAPSIBLE INITIALIZATION
   // ==========================
 
   // Initialize collapsibles
   $(Collapsible.SELECTORS.collapsibleStart).collapsible();
-  
+
   // Wrap adjacent Collapsibles into Accordions
   $(Collapsible.SELECTORS.collapsible)
     .not(Collapsible.SELECTORS.collapsible + '+' + Collapsible.SELECTORS.collapsible)
-    .each(function(i){
+    .each(function(i) {
       $(this)
-        .nextUntil(':not('+Collapsible.SELECTORS.collapsible+')')
+        .nextUntil(':not(' + Collapsible.SELECTORS.collapsible + ')')
         .addBack()
-        .wrapAll('<div class="panel-group" id="accordion-'+(i+1)+'" />');
+        .wrapAll('<div class="panel-group" id="accordion-' + (i + 1) + '" />');
     });
-  $('.panel-group').each(function(){
+  $('.panel-group').each(function() {
     var $accordion = $(this);
     var id = $accordion.attr('id');
-    $accordion.find('[data-toggle="collapse"]').attr('data-parent', '#'+id);
+
+    $accordion.find('[data-toggle="collapse"]').attr('data-parent', '#' + id);
   });
 
   // Cleanup unused Collapsible Ends
   $(Collapsible.SELECTORS.collapsibleEnd).parents(Collapsible.SELECTORS.widget)
-    .not(_.map(Collapsible.SELECTORS.nestingWidgets, function (name) {
+    .not(_.map(Collapsible.SELECTORS.nestingWidgets, function(name) {
       return '[data-widget-package="' + name + '"]';
     }).join(', ')).remove();
 
@@ -151,18 +161,19 @@
    * index {Number} The index of accordion that you want to open, where 0 is the first one. (Default: 0)
    * groupIndex {Number} (Optional) The group of accordion that you want to specify. Use this to apply the index within a specific group. If this is not used, the index query will be used to target an accordion relative to the entire screen.
    * scroll {Boolean} If true, users will be scrolled to the opened accordion. (Default: false)
-   * 
+   *
    * Example 1 - Open the 1st accordion
    * ?action=openAccordion
    *
    * Example 2 - Open and scroll to the 2nd accordion of the 2nd accordion group
    * ?action=openAccordion&groupIndex=1&index=1&scroll=true
-   * 
+   *
    * Example 3 - Open all accordions with title "Foo bar" and scrolls to the first match
    * ?action=openAccordion&title=Foo%20bar&scroll=true
-   * 
+   *
    */
   var query = Fliplet.Navigate.query;
+
   if (query && query.action === 'openAccordion') {
     var index = parseInt(query.index, 10) || 0;
     var groupIndex = parseInt(query.groupIndex, 10) || '';
@@ -171,13 +182,13 @@
     var $collapse;
 
     if (title) {
-      $collapse = $('.panel-group > .panel').filter(function () {
+      $collapse = $('.panel-group > .panel').filter(function() {
         return $(this).find('h4').text() === title;
       });
     } else if (typeof groupIndex === 'number') {
-      $collapse = $('.panel-group:eq('+groupIndex+') > .panel:eq('+index+')');
+      $collapse = $('.panel-group:eq(' + groupIndex + ') > .panel:eq(' + index + ')');
     } else {
-      $collapse = $('.panel-group > .panel:eq('+index+')');
+      $collapse = $('.panel-group > .panel:eq(' + index + ')');
     }
 
     if (!$collapse.length) {
@@ -185,8 +196,9 @@
     }
 
     $collapse.children('.panel-collapse').collapse('show');
+
     if (scroll && $collapse.position()) {
-      $('html, body').animate({scrollTop: $collapse.eq(0).position().top}, 100);
+      $('html, body').animate({ scrollTop: $collapse.eq(0).position().top }, 100);
     }
   }
 
@@ -197,7 +209,7 @@
         $(event.target).find(Collapsible.SELECTORS.collapse).collapse('toggle');
       }
     })
-    .on('show.bs.collapse', Collapsible.SELECTORS.collapse, function(){
+    .on('show.bs.collapse', Collapsible.SELECTORS.collapse, function() {
       // Immediately when the expand action is fired
       var $element = $(this);
       var id = $element.attr('id');
@@ -214,8 +226,8 @@
 
       if ($openedAccordions.length && !isChildOpening) {
         $openedAccordions.collapse('hide');
-      } 
-      
+      }
+
       Collapsible.prototype.toggleChevron(id, true);
       resizeWindow();
       Fliplet.Analytics.trackEvent({
@@ -224,17 +236,17 @@
         label: label
       });
     })
-    .on('hide.bs.collapse', Collapsible.SELECTORS.collapse, function(){
+    .on('hide.bs.collapse', Collapsible.SELECTORS.collapse, function() {
       // Immediately when the collapse action is fired
       resizeWindow();
     })
-    .on('shown.bs.collapse', Collapsible.SELECTORS.collapse, function(){
+    .on('shown.bs.collapse', Collapsible.SELECTORS.collapse, function() {
       // When finishes expanding
       $(this).removeClass('opening');
 
       resizeWindow();
     })
-    .on('hidden.bs.collapse', Collapsible.SELECTORS.collapse, function(){
+    .on('hidden.bs.collapse', Collapsible.SELECTORS.collapse, function() {
       // When finishes collapsing
     });
 })(jQuery);
