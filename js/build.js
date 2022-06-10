@@ -2,7 +2,11 @@
   'use strict';
 
   Fliplet.Widget.instance('collapse-start', function() {
-    $(this).translate();
+    var $container = $(this);
+
+    Fliplet().then(function() {
+      $container.translate();
+    });
   });
 
   if (Fliplet.Env.get('interact')) {
