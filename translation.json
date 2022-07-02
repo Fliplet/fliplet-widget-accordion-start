@@ -1,0 +1,9 @@
+{
+  "widgets": {
+    "accordion": {
+      "start": {
+        "title": "Enter accordion title"
+      }
+    }
+  }
+}
