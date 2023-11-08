@@ -8,27 +8,11 @@
   "references": [],
   "html_tag": "div",
   "interface": {
-    "dependencies": [
-      "fliplet-core",
-      "fliplet-studio-ui"
-    ],
-    "assets": [
-      "css/interface.css",
-      "vendor/jquery.debounce.js",
-      "js/interface.js"
-    ]
+    "dependencies": ["fliplet-core", "fliplet-studio-ui"],
+    "assets": ["css/interface.css", "vendor/jquery.debounce.js", "js/interface.js"]
   },
   "build": {
-    "dependencies": [
-      "handlebars",
-      "jquery",
-      "bootstrap",
-      "lodash"
-    ],
-    "assets": [
-      "css/build.css",
-      "js/build.templates.js",
-      "js/build.js"
-    ]
+    "dependencies": ["handlebars", "jquery", "bootstrap", "lodash"],
+    "assets": ["css/build.css", "js/build.templates.js", "js/libs/collapsible.js", "js/build.js"]
   }
 }
