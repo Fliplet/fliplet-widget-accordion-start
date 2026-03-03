@@ -12,7 +12,7 @@
     "assets": ["css/interface.css", "vendor/jquery.debounce.js", "js/interface.js"]
   },
   "build": {
-    "dependencies": ["handlebars", "jquery", "bootstrap", "lodash"],
+    "dependencies": ["handlebars", "jquery", "bootstrap"],
     "assets": ["css/build.css", "js/build.templates.js", "js/libs/collapsible.js", "js/build.js"]
   }
 }
